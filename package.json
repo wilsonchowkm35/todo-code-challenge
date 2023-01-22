@@ -12,14 +12,17 @@
     "test:e2e": "playwright test",
     "build-only": "vite build",
     "type-check": "vue-tsc --noEmit -p tsconfig.vitest.json --composite false",
-    "lint": "eslint todo.io --ext .vue,.js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts --fix --ignore-path .gitignore"
+    "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts --fix --ignore-path .gitignore"
   },
   "dependencies": {
+    "@xstate/vue": "^2.0.0",
     "pinia": "^2.0.28",
     "socket.io": "^4.5.4",
     "socket.io-client": "^4.5.4",
     "vue": "^3.2.45",
-    "vue-router": "^4.1.6"
+    "vue-router": "^4.1.6",
+    "vuetify": "^3.1.2",
+    "xstate": "^4.35.2"
   },
   "devDependencies": {
     "@playwright/test": "^1.28.1",
