@@ -37,7 +37,6 @@ export const authMachine = createMachine(
   {
     services: {
       authenicate: () => (send) => {
-        console.log("authenicating...");
         localStorage.getItem("username")
           ? send({
               type: "USER_LOGGED_IN",
@@ -50,19 +49,7 @@ export const authMachine = createMachine(
 );
 
 const authService = interpret(authMachine);
-// const router = useRouter();
-// console.log('router', router)
-authService
-  .onTransition((state) => {
-    console.log("state", state.value, typeof state.value);
-    // currentState = state.value;
-    // const stateStr: string = state.value || '';
-    // console.log(stateStr);
-    if (state.value === "loggedIn") {
-      // router.push("board");
-    }
-  })
-  .start();
+authService.start();
 
 export const useAuthService = () => {
   return useActor(authService);

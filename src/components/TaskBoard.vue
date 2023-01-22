@@ -1,56 +1,39 @@
 <script setup lang="ts">
-import { ref } from "vue";
+import { ref, onMounted } from "vue";
 import TaskForm from "../components/TaskForm.vue";
 import TaskCard from "../components/TaskCard.vue";
-import { getColors } from "../composables/card";
 import type { Position, Transform, Task } from "../interfaces/task";
 
+const props = defineProps<{ tasks: Task[] }>();
+const emit = defineEmits<{
+  (event: "createTask", task: Task): void;
+  (event: "deleteTask", task: Task): void;
+}>();
+const focusTask = ref<string>("");
+const transform = ref<Transform>({ transform: `translate(0px, 0px)` });
 const openForm = ref(false);
-const transform = ref<Transform>({
-  transform: `translate(0px, 0px)`,
+const board = ref();
+let position: Position = { x: 0, y: 0 };
+let boardHeight: number = 0;
+
+window.addEventListener("resize", () => {
+  boardHeight = board.value.clientHeight || 0;
 });
 
-// sample tasks
-const colors = getColors();
-const samplePos: Position[] = [
-  { x: 91, y: 97 },
-  { x: 104, y: 54 },
-  { x: 118, y: 561 },
-  { x: 122, y: 498 },
-  { x: 949, y: 341 },
-  { x: 629, y: 145 },
-  { x: 427, y: 148 },
-  { x: 242, y: 112 },
-  { x: 1122, y: 83 },
-  { x: 550, y: 300 },
-];
-
-const sampleTasks: Task[] = [];
-for (let i = 0; i < 10; i++) {
-  sampleTasks.push({
-    id: i.toString(),
-    title: `title ${i + 1}`,
-    description: `description ${i + 1}`,
-    color: colors[i % colors.length],
-    createdBy: "wilsonchow",
-    createdAt: new Date().getTime(),
-    x: samplePos[i].x,
-    y: samplePos[i].y,
-  });
-}
-
-const tasks = ref<Task[]>(sampleTasks);
-const focusTask = ref<string>("");
+onMounted(() => {
+  boardHeight = board.value.clientHeight || 0;
+});
 
 function createCard(event: Position) {
-  console.log(event.x, event.y);
   openDialog({ x: event.x, y: event?.y });
 }
 
 function openDialog(pos: Position) {
+  position.x = pos.x;
+  position.y = pos.y;
   openForm.value = true;
   transform.value = {
-    transform: `translate(${pos.x}px, ${pos.y}px)`,
+    transform: `translate(${pos.x}px, ${-(boardHeight - pos.y)}px)`,
   };
 }
 
@@ -59,18 +42,32 @@ function closeDialog() {
 }
 
 function createTask(task: Task) {
-  console.log("create", task);
+  task.x = position.x;
+  task.y = position.y;
+  task.createdBy = localStorage.getItem("username") || "unknown";
+  emit("createTask", task);
+  closeDialog();
 }
 
 function removeTask(task: Task) {
-  console.log("removeTask", task);
+  emit("deleteTask", task);
 }
 
 function showCard(task: Task) {
   focusTask.value = task?.id || "";
 }
 </script>
-<template>
+<template class="board bg-grey-lighten-4">
+  <div id="board" @click="createCard" ref="board">
+    <TaskCard
+      v-for="task in props.tasks"
+      :key="task.id"
+      :task="task"
+      v-model="focusTask"
+      @removeTask="removeTask"
+      @showCard="showCard"
+    />
+  </div>
   <div
     id="popover"
     class="task-form"
@@ -90,34 +87,19 @@ function showCard(task: Task) {
         </template>
       </v-toolbar>
       <v-card-text>
-        <TaskForm
-          title="hello"
-          description="world"
-          color="red"
-          @create="createTask"
-        />
+        <TaskForm title="" description="" color="" @createTask="createTask" />
       </v-card-text>
     </v-card>
-  </div>
-  <div id="board" class="board bg-grey-lighten-4" @click="createCard">
-    <TaskCard
-      v-for="(task, index) in tasks"
-      :key="index"
-      :task="task"
-      v-model="focusTask"
-      @removeTask="removeTask"
-      @showCard="showCard"
-    />
   </div>
 </template>
 
 <style scoped>
 #board {
-  width: 100vw;
   height: 100vh;
-  border: 1px solid #ccc;
+  overflow-x: auto;
   cursor: pointer;
   margin: 0 auto;
+  position: relative;
 }
 
 .task-form {

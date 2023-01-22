@@ -9,3 +9,10 @@ export function getBgClass(
 export function getColors(): string[] {
   return ["green", "blue", "purple", "pink"];
 }
+
+export function formatDate(datetime: number | undefined): string {
+  if (datetime) {
+    return new Date(datetime).toLocaleString();
+  }
+  return "N/A";
+}

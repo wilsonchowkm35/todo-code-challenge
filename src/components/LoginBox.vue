@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { ref, watch } from "vue";
 import { useRouter } from "vue-router";
-
 import { useAuthService } from "../machines/auth";
+
 const router = useRouter();
 const { state, send } = useAuthService();
 const minLength: number = 3;
@@ -12,8 +12,8 @@ const loginForm = ref<HTMLFormElement>();
 if (state.value.value === "loggedIn") {
   router.push("board");
 }
+
 watch(state, async (changedState) => {
-  console.log("changedState", changedState.value);
   if (changedState.value === "loggedIn") {
     router.push("board");
   }
@@ -28,7 +28,6 @@ if (minLength) {
   rules.push(rule);
 }
 
-// console.log('state.value', state.value);
 async function login(): Promise<void> {
   const result: any = await loginForm.value?.validate();
   if (result?.valid) {
@@ -41,7 +40,7 @@ async function login(): Promise<void> {
 }
 </script>
 <template>
-  <v-form ref="loginForm" lazy-validation>
+  <v-form ref="loginForm" @submit.prevent="login" lazy-validation>
     <v-container>
       <v-row justify="space-between">
         <v-col cols="12" md="12">

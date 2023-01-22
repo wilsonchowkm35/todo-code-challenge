@@ -1,13 +1,14 @@
 <script setup lang="ts">
 import { ref } from "vue";
 import type { Task } from "../interfaces/task";
-import { getBgClass } from "../composables/card";
-
-const props = defineProps<{ task: Task; modelValue: string }>();
+import { formatDate, getBgClass } from "../composables/card";
 
 interface Transform {
   transform: string;
 }
+
+const props = defineProps<{ task: Task; modelValue: string }>();
+
 let transform = ref<Transform>({
   transform: `translate(${props.task.x || 0}px, ${props.task.y || 0}px)`,
 });
@@ -18,12 +19,10 @@ const emit = defineEmits<{
 }>();
 
 function removeTask(task: Task) {
-  console.log("remove task in child", task);
   emit("removeTask", task);
 }
 
 function showCard() {
-  console.log("show card", props.task.id);
   emit("showCard", props.task);
 }
 </script>
@@ -51,12 +50,12 @@ function showCard() {
         </template>
       </v-toolbar>
       <v-card-text>
-        <div class="font-weight-normal">
-          {{ props.task?.description }}
+        <div class="font-weight-normal mb-4">
+          <pre>{{ props.task?.description }}</pre>
         </div>
         <div>
           <strong>Created by {{ props.task?.createdBy }}</strong> @{{
-            props.task?.createdAt
+            formatDate(props.task?.createdAt)
           }}
         </div>
       </v-card-text>

@@ -1,20 +1,25 @@
 <script setup lang="ts">
 import { ref } from "vue";
 import type { Task } from "../interfaces/task";
+import { getColors } from "../composables/card";
 import ColorPicker from "./form/ColorPicker.vue";
 
 // Known issue with vue3, ref: https://github.com/vuejs/core/issues/4294
 export interface TaskForm extends Task {}
 
 const task = defineProps<TaskForm>();
-const minLength: number = 3;
+const emit = defineEmits<{
+  (event: "createTask", task: Task): void;
+}>();
+
 const createForm = ref<HTMLFormElement>();
 const taskTitle = ref<string>(task.title);
 const taskDesc = ref<string>(task.description);
-const taskColor = ref<string>(task.color || "");
-
+const taskColor = ref<string>(task.color || getColors()[0]);
+const minLength: number = 3;
 const titleRules: any[] = [];
 const descRules: any[] = [];
+
 if (minLength) {
   const rule = (val: string) =>
     (val || "").length < minLength
@@ -26,14 +31,11 @@ if (minLength) {
 async function create(): Promise<void> {
   const result: any = await createForm.value?.validate();
   if (result?.valid) {
-    // dologin
-    console.log(
-      "title",
-      taskTitle.value,
-      taskDesc.value,
-      taskColor.value,
-      result?.valid
-    );
+    emit("createTask", {
+      title: taskTitle.value,
+      description: taskDesc.value,
+      color: taskColor.value,
+    });
   }
 }
 </script>
