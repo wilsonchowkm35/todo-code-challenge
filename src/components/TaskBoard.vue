@@ -76,7 +76,7 @@ function showCard(task: Task) {
   >
     <v-card width="300">
       <v-toolbar color="rgba(0, 0, 0, 0)">
-        <v-toolbar-title class="text-h6">Create Task</v-toolbar-title>
+        <v-toolbar-title class="text-h6">Create a todo</v-toolbar-title>
         <template v-slot:append>
           <v-btn
             size="x-small"

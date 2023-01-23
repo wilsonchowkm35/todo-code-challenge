@@ -29,6 +29,9 @@ Create more slots for color selection and enable selection from the color palett
 - Drag and Drop: <br />
 Enable drag and drop for each of todo item in board.
 
+- n18i: <br />
+Multilingual support
+
 ### Architecture: 
 - Presistent Data storage: <br />
 Replace file based data storage to database. Consider that it may be high write activity, NoSQL database such as mongoDB, cassandra will be suggested in this case.
