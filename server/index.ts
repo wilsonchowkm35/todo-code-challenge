@@ -1,6 +1,6 @@
 import { createServer } from "http";
 import { Server, Socket } from "socket.io";
-import { Tasks } from "./tasks";
+import { tasksDb } from "./services/tasks";
 import type { Task } from "../src/interfaces/task";
 
 interface Message {
@@ -15,16 +15,12 @@ const io = new Server(httpServer, {
     origin: "*",
   },
 });
-const taskDb: Tasks = new Tasks("tasks/tasks.json");
-
-// load presistence tasks data
-taskDb.load();
 
 io.on("connection", (socket: Socket) => {
   console.log("connected");
   socket.emit("message", {
     type: "INIT",
-    tasks: taskDb.tasks,
+    tasks: tasksDb.tasks,
   });
 
   socket.on("message", (data: Message) => {
@@ -32,18 +28,18 @@ io.on("connection", (socket: Socket) => {
       switch (data.type) {
         case "CREATE":
           if (data.task) {
-            taskDb.add(data.task);
+            tasksDb.add(data.task);
           }
           break;
         case "DELETE":
           if (data.task) {
-            taskDb.delete(data.task);
+            tasksDb.delete(data.task);
           }
           break;
       }
 
-      socket.emit("message", { tasks: taskDb.tasks });
-      socket.broadcast.emit("message", { tasks: taskDb.tasks });
+      socket.emit("message", { tasks: tasksDb.tasks });
+      socket.broadcast.emit("message", { tasks: tasksDb.tasks });
     } catch (error) {
       socket.emit("message", { type: "ERROR", task: data.task });
     }
@@ -51,13 +47,13 @@ io.on("connection", (socket: Socket) => {
 
   socket.on("close", () => {
     console.log("Server is closed...");
-    taskDb.save();
+    tasksDb.save();
   });
 
   socket.on("error", (error) => {
     console.error(`[ERROR] ${error.message}`);
     if (error && error.message === "unauthorized event") {
-      taskDb.save();
+      tasksDb.save();
       socket.disconnect();
     }
   });
@@ -71,7 +67,7 @@ io.on("connection", (socket: Socket) => {
 function shutdown(error: string) {
   return (err) => {
     console.log(`${err}! Receive signal: ${error}! Server shutdown now!`);
-    taskDb.save();
+    tasksDb.save();
   };
 }
 

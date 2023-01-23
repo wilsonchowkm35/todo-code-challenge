@@ -5,7 +5,7 @@
   "scripts": {
     "dev": "concurrently --kill-others \"npm:dev:server\" \"npm:dev:frontend\"",
     "dev:frontend": "vite",
-    "dev:server": "nodemon server/index.ts",
+    "dev:server": "nodemon server/index.ts --ignore 'data/*.json'",
     "build": "run-p type-check build-only",
     "preview": "vite preview",
     "test:unit": "concurrently --kill-others \"vitest --environment jsdom --root src\" \"vitest --environment jsdom --root server\"",

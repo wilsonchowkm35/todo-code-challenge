@@ -1,14 +1,19 @@
 import { readFileSync, writeFileSync } from "fs";
 import { resolve } from "path";
 import { v4 as uuidv4 } from "uuid";
-import type { Task } from "../src/interfaces/task";
+import type { Task } from "../../src/interfaces/task";
 
 export class Tasks {
   private dataPath: string;
+  private timer: ReturnType<typeof setInterval>;
+  private autoSaveInterval: number = 5000;
+  private saveLock: boolean = false;
   public tasks: Task[];
 
-  constructor(path: string) {
-    this.dataPath = resolve(__dirname, path);
+  constructor(path?: string) {
+    this.dataPath = resolve(__dirname, path || "../data/tasks.json");
+    this.load();
+    this.autoSave();
   }
 
   /**
@@ -55,7 +60,7 @@ export class Tasks {
     } catch (error) {
       this.tasks = [];
       console.error(`Load data file error! ${error.toString()}`);
-      throw error;
+      // throw error;
     }
   }
 
@@ -63,11 +68,30 @@ export class Tasks {
    * @description Save current task to persistence storage
    */
   save() {
+    if (this.saveLock) {
+      return;
+    }
     try {
+      console.log("Data save now.");
+      this.saveLock = true;
       writeFileSync(this.dataPath, JSON.stringify(this.tasks));
+      this.saveLock = false;
+      console.log("Save data is completed");
     } catch (error) {
       console.error(`Save data file error! ${error.toString()}`);
       throw error;
     }
   }
+
+  /**
+   * @description Auto save tasks to file every n second; default: n = 5 second
+   */
+  autoSave() {
+    this.timer = setInterval(() => {
+      console.log(`${new Date()}: [INFO] Auto saving now...`);
+      this.save();
+    }, this.autoSaveInterval);
+  }
 }
+
+export const tasksDb = new Tasks();

@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { Tasks } from "../tasks";
+import { Tasks } from "../services/tasks";
 
 const filePath = "";
 const taskDb = new Tasks(filePath);
