@@ -47,12 +47,14 @@ async function login(): Promise<void> {
           <v-text-field
             v-model="username"
             :rules="rules"
-            label="Please enter your username"
+            label="Your Username:"
           ></v-text-field>
         </v-col>
       </v-row>
       <v-row>
-        <v-btn color="success" class="me-4" @click="login"> Login </v-btn>
+        <v-col cols="12" md="12" class="text-right">
+          <v-btn color="success" class="me-4" @click="login"> Join </v-btn>
+        </v-col>
       </v-row>
     </v-container>
   </v-form>
