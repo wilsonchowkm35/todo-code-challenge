@@ -65,16 +65,18 @@ io.on("connection", (socket: Socket) => {
  * @returns
  */
 function shutdown(error: string) {
-  return (err) => {
-    console.log(`${err}! Receive signal: ${error}! Server shutdown now!`);
+  return () => {
+    console.log(`Receive signal: ${error}! Server shutdown now!`);
+    tasksDb.terminate();
     tasksDb.save();
+    process.exit();
   };
 }
 
 // Simply way to handle server termination.
 process
   .on("SIGTERM", shutdown("SIGTERM"))
-  .on("SIGINT", shutdown("SIGINT"))
-  .on("uncaughtException", shutdown("uncaughtException"));
+  .on("SIGINT", shutdown("SIGNINT"))
+  .on("uncaughtException", shutdown("UncaughtException"));
 
 httpServer.listen(3000);

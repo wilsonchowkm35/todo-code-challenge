@@ -92,6 +92,14 @@ export class Tasks {
       this.save();
     }, this.autoSaveInterval);
   }
+
+  /**
+   * @description Call when server is terminated
+   */
+  terminate() {
+    console.log('data is terminating now.');
+    clearInterval(this.timer);
+  }
 }
 
 export const tasksDb = new Tasks();
