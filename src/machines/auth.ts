@@ -1,6 +1,5 @@
 import { createMachine, interpret } from "xstate";
 import { useActor } from "@xstate/vue";
-// import { useRouter } from "vue-router";
 
 export const authMachine = createMachine(
   {

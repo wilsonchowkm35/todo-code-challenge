@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import LoginBox from "../components/LoginBox.vue";
+import LoginBox from "@/components/LoginBox.vue";
 const title: string = "Join the board!";
 </script>
 

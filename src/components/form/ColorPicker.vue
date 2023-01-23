@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref } from "vue";
-import { getBgClass, getColors } from "../../composables/card";
+import { getBgClass, getColors } from "@/composables/card";
 
 const props = defineProps<{ modelValue: string }>();
 const colors: string[] = getColors();

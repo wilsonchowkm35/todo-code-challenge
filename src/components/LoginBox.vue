@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref, watch } from "vue";
 import { useRouter } from "vue-router";
-import { useAuthService } from "../machines/auth";
+import { useAuthService } from "@/machines/auth";
 
 const router = useRouter();
 const { state, send } = useAuthService();

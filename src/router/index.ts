@@ -1,7 +1,7 @@
 import { createRouter, createWebHistory } from "vue-router";
-import { useAuthService } from "../machines/auth";
-import Home from "../pages/HomeView.vue";
-import Board from "../pages/BoardView.vue";
+import { useAuthService } from "@/machines/auth";
+import Home from "@/pages/HomeView.vue";
+import Board from "@/pages/BoardView.vue";
 
 const { state } = useAuthService();
 

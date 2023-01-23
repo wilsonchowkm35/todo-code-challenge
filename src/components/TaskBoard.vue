@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { ref, onMounted } from "vue";
-import TaskForm from "../components/TaskForm.vue";
-import TaskCard from "../components/TaskCard.vue";
-import type { Position, Transform, Task } from "../interfaces/task";
+import TaskForm from "@/components/TaskForm.vue";
+import TaskCard from "@/components/TaskCard.vue";
+import type { Position, Transform, Task } from "@/interfaces/task";
 
 const props = defineProps<{ tasks: Task[] }>();
 const emit = defineEmits<{
@@ -95,6 +95,7 @@ function showCard(task: Task) {
 
 <style scoped>
 #board {
+  background-color: #eee;
   height: 100vh;
   overflow-x: auto;
   cursor: pointer;

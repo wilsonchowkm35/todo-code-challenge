@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { ref } from "vue";
-import type { Task } from "../interfaces/task";
-import { getColors } from "../composables/card";
-import ColorPicker from "./form/ColorPicker.vue";
+import type { Task } from "@/interfaces/task";
+import { getColors } from "@/composables/card";
+import ColorPicker from "@/components/form/ColorPicker.vue";
 
 // Known issue with vue3, ref: https://github.com/vuejs/core/issues/4294
 export interface TaskForm extends Task {}

@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref } from "vue";
-import type { Task } from "../interfaces/task";
-import { formatDate, getBgClass } from "../composables/card";
+import type { Task } from "@/interfaces/task";
+import { formatDate, getBgClass } from "@/composables/card";
 
 interface Transform {
   transform: string;

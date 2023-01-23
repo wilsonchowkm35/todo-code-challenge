@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { ref } from "vue";
 import { io } from "socket.io-client";
-import type { Task } from "../interfaces/task";
-import TaskBoard from "../components/TaskBoard.vue";
+import type { Task } from "@/interfaces/task";
+import TaskBoard from "@/components/TaskBoard.vue";
 
 const tasks = ref<Task[]>([]);
 const socket = io("127.0.0.1:3000");
