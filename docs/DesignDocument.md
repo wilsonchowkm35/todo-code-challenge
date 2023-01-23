@@ -6,7 +6,8 @@ Todo.io is todo application with multiplay twist.
 ## Solution
 
 ### Architecture
-It's very simple web application architecture. Vue is used for build web interaces. Socket.io is used for emit/boardcast any data exchange between server and client. Todo data is stored server in-memory and write to file with JSON format either every 5 second or terminal signal is received. 
+It's very simple web application architecture. Vue is used for build web interaces. Socket.io is used for emit/boardcast any data exchange between server and client. Todo data is stored server in-memory and write to file with JSON format either every 5 second or terminal signal is received.
+<br />
 <img alt="system architecure" src="./images/arch.png" width="80%">
 
 ### Vue Views and Components
