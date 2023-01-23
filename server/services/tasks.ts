@@ -1,5 +1,5 @@
-import { readFileSync, writeFileSync } from "fs";
-import { resolve } from "path";
+import { existsSync, mkdirSync, readFileSync, writeFileSync } from "fs";
+import { dirname, resolve } from "path";
 import { v4 as uuidv4 } from "uuid";
 import type { Task } from "../../src/interfaces/task";
 
@@ -74,12 +74,16 @@ export class Tasks {
     try {
       console.log("Data save now.");
       this.saveLock = true;
+      if (!existsSync(dirname(this.dataPath))) {
+        mkdirSync(dirname(this.dataPath), { recursive: true });
+      }
       writeFileSync(this.dataPath, JSON.stringify(this.tasks));
       this.saveLock = false;
       console.log("Save data is completed");
     } catch (error) {
+      this.saveLock = false;
       console.error(`Save data file error! ${error.toString()}`);
-      throw error;
+      // throw error;
     }
   }
 
@@ -97,7 +101,7 @@ export class Tasks {
    * @description Call when server is terminated
    */
   terminate() {
-    console.log('data is terminating now.');
+    console.log("data is terminating now.");
     clearInterval(this.timer);
   }
 }

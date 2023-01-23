@@ -69,7 +69,7 @@ function shutdown(error: string) {
     console.log(`Receive signal: ${error}! Server shutdown now!`);
     tasksDb.terminate();
     tasksDb.save();
-    process.exit();
+    process.exit(-1);
   };
 }
 
